@@ -1,0 +1,22 @@
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  5% {
+    transform: translateX(-5px);
+  }
+  7% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes slide-left {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
