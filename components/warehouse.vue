@@ -2,7 +2,7 @@
   <div class="container warehouse">
     <Header />
     <div class="popular-section">
-      <!-- <Search @search="handleSearch" />
+      <Search @search="handleSearch" />
       <div class="popular-warehouse" v-if="filteredItems.length > 0 || items.length > 0">
         <h1 class="popular-warehouse__title">Ommabop mahsulotlar</h1>
         <p class="popular-warehouse__subtitle">{{ total }} ta mahsulot</p>
@@ -14,10 +14,9 @@
         v-if="filteredItems.length > 0 || items.length > 0"
       />
       <ItemsList :filteredItems="filteredItems" v-if="filteredItems.length > 0" />
-      <NoProducts v-else @refresh="refetchProducts" /> -->
+      <!-- <NoProducts v-else @refresh="refetchProducts" /> -->
     </div>
     <div class="home-loader" v-if="isFetching" />
-    <div id="load-trigger"></div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -43,6 +42,7 @@ const {
 } = useMoreData({
   key: ["products"],
   link: "/v3/retail/trade/products",
+  // params: { search: searchQuery, category: selectedFilter },
   size: 20,
   elementId: "load-trigger",
   responseKey: "producs"

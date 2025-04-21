@@ -1,7 +1,7 @@
 <template>
   <header class="p-4 header-border">
     <div class="flex items-center gap-3">
-      <img src="~/assets/images/logo.svg" alt="logo" />
+      <img src="/img/logo.svg" alt="logo" />
       <span class="logo">Keeping</span>
     </div>
   </header>
