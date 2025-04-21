@@ -1,7 +1,7 @@
 export const useApi = () => {
   const config = useRuntimeConfig();
   const router = useRouter();
-  const { token } = useAuth();
+  const token = useCookie("token");
 
   const coreApi = config.public.coreApi;
   const authApi = config.public.authApi;
@@ -29,13 +29,13 @@ export const useApi = () => {
         query: options.query,
         headers: {
           ...options.headers,
-          ...(token ? { Authorization: `Bearer ${token.value}` } : {})
+          ...(token.value ? { Authorization: `Bearer ${token.value}` } : {})
         }
       });
     } catch (error: any) {
       if (error?.status === 401) {
-        // localStorage.removeItem("token");
-        // router.push("/"); // change it to login
+        token.value = null;
+        router.push("/login");
       } else if (error?.status === 500) {
         router.push("/network");
       }

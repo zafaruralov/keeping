@@ -5,7 +5,7 @@ import { getParams } from "../services/getParams";
 export function useMoreData({ key, link, size, elementId, params = null, responseKey, ...rest }) {
   const total = ref(0);
   const observer = ref<IntersectionObserver | null>(null);
-  const $api = useApi();
+  const { $api } = useApi();
 
   const allParams = computed(() => (params ? { ...getParams(params) } : {}));
 

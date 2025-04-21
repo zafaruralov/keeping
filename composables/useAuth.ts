@@ -1,9 +1,35 @@
 export const useAuth = () => {
-  const token = useCookie("token");
+  const token = useCookie("token", { maxAge: 60 * 60 * 24 * 7 });
 
-  token.value =
-    "eyJhbGciOiJSUzI1NiJ9.eyJ1cGRhdGVfaWQiOjExOTQzOSwic3ViIjoiODBmOTMyNzEtMDJiYy00OTY0LWIxMTgtZWJkNjBjMjk0YzhkIiwicm9sZXMiOiIiLCJpc3MiOiIiLCJ0eXBlIjoiQmVhcmVyIiwibG9jYWxlIjoidXoiLCJzaWQiOiI4NTRmZDc1Yi1iZjZmLTQyZjAtOTI4My04NTY0NDMwNWM5YzUiLCJhdWQiOiJhY2NvdW50IiwiZnVsbF9uYW1lIjoiVE_igJhZQ0hJWUVWIEpBTVNISUQgQUJEVVNBTUFET1ZJQ0giLCJleHAiOjE3NDUxNzkwMDMsInNlc3Npb25fc3RhdGUiOiJTVEFURUxFU1MiLCJpYXQiOjE3NDUxNjEwMDMsImp0aSI6ImVkMDM1NDE0LWY1MmUtNGUyZS1hYTYwLTk4MTcxZTBiZjkwZCIsInVzZXJuYW1lIjoiMjA2ODIzNzg1MDIifQ.KjZ9JAU2Kg3unEEJSp1OIKh3nURo8lHoc6dn3rpz27lPjO8T4SgHckBvWMZ8Tf6ujvC-q6gh9-ak4Id3I2-4bpf-YjDyibO1RtdYkL-ujdDtmw1Meo_YCTpeb8SAvnVz_pXf9krAUY4Fyux3VpUfHmphfIGGqiS51FpU08p_TSMun_-NQb-cL5NyamWRocrUXNGLbsfyKa2pXixX98TcY8QLmAn0cda4b81wDjK8n9QKGD9Pkp2AOtppCfKYDlS6FYLm39C950IiT4WShbSyVDZnGUXOLPyGIfWloOorDovhq8p2koTEc4yNmIIfKod-rpSesjK5q9BN32JnGi7GpA";
+  const login = async ({ username, password }: { username: string; password: string }) => {
+    const params = new URLSearchParams();
+    params.append("username", username);
+    params.append("password", password);
+
+    const { $api } = useApi();
+
+    const res = await $api<{ data: { access_token: string } }>("/login", {
+      method: "POST",
+      body: params,
+      headers: {
+        "device-id": navigator.userAgent
+      }
+    });
+
+    token.value = res.data.access_token;
+  };
+
+  const logout = () => {
+    token.value = null;
+    navigateTo("/");
+  };
+
+  const isLoggedIn = computed(() => !!token.value);
+
   return {
-    token
+    token,
+    login,
+    logout,
+    isLoggedIn
   };
 };
